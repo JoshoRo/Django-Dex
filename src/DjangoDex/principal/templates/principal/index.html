@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generation V Pokédex</title>
+    {% load static %}
+    <style>
+        @font-face {
+            font-family: 'PokemonBW';
+            src: url('{% static "fonts/pokemon-b-w.ttf" %}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'PokemonBW', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url("{% static 'images/background.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Fija la imagen de fondo */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        table {
+            width: 60%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin: 0 auto; 
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 6px 10px; 
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: rgb(216, 99, 99); 
+            color: white;
+        }
+
+        img {
+            max-width: 80px; 
+            height: auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit; 
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .row-black {
+            background-color: rgb(43,43,40);
+            color: white;
+        }
+
+        .row-white {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generation V Pokédex</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nº Pokédex</th>
+                <th>Sprite</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pokemon in generation_5_pokemon %}
+            <tr class="{% if forloop.counter0|divisibleby:2 %}row-black{% else %}row-white{% endif %}">
+                <td>#{{ pokemon.id }}</td>
+                <td><img src="{{ pokemon.sprite }}" alt="{{ pokemon.name }}"></td>
+                <td><a href="{% url 'pokemon_detail' pokemon.id %}">{{ pokemon.name | capfirst }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

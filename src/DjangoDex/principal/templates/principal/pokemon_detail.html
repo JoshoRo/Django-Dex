@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de {{ pokemon.name|capfirst }}</title>
+    {% load static %}
+    <style>
+        @font-face {
+            font-family: 'PokemonBW';
+            src: url('{% static "fonts/pokemon-b-w.ttf" %}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+    
+        body {
+            font-family: 'PokemonBW', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url("{% static 'images/background.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+    
+        .pokemon-detail {
+            width: 60%;
+            max-width: 800px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            text-align: center; /* Centra todo el contenido dentro del contenedor */
+        }
+    
+        .pokemon-detail img {
+            max-width: 200px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+    
+        .pokemon-detail p {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+    
+        .pokemon-detail ul {
+            list-style-type: none;
+            padding: 0;
+            font-size: 20px; 
+        }
+    
+        .pokemon-detail strong {
+            font-weight: bold;
+        }
+    
+        .back-button {
+            position: absolute; 
+            top: 20px;
+            left: 20px;
+            background-color: rgb(216, 99, 99); 
+            color: white; 
+            border: none;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            font-family: 'PokemonBW', Arial, sans-serif;
+            cursor: pointer;
+        }
+    
+        .back-button:hover {
+            background-color: #c04e4e; /* Oscurece un poco el color al pasar el ratón por encima */
+        }
+    
+        .pokemon-evolution {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+    
+        .pokemon-evolution h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+    
+        .pokemon-evolution p {
+            font-size: 20px;
+            color: #555;
+        }
+    
+        .evolution-sprites {
+            margin-bottom: 10px;
+        }
+    
+        .evolution-sprite {
+            margin: 0 5px;
+            width: 64px;  /* Ajusta el tamaño de los sprites si es necesario */
+            height: 64px;
+        }
+    
+        .sprites {
+            display: flex;
+            justify-content: center; /* Centra los sprites horizontalmente */
+            gap: 10px; /* Espacio entre los sprites */
+        }
+    
+        .sprites img {
+            width: 100px; /* Ajusta el tamaño según sea necesario */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón de regreso al index -->
+    <a href="{% url 'index' %}" class="back-button">⬅ Volver</a>
+
+    <h1>Detalle de {{ pokemon.name|title }}</h1>
+    <div class="pokemon-detail">
+        <img src="{{ pokemon.sprite }}" alt="{{ pokemon.name|title }}">
+
+        {% if pokemon.type_2 %}
+            <p><strong>Tipos:</strong></p>
+            <p>Tipo 1: {{ pokemon.type_1 }}</p>
+            <p>Tipo 2: {{ pokemon.type_2 }}</p>
+        {% else %}
+            <p><strong>Tipo:</strong> {{ pokemon.type_1 }}</p>
+        {% endif %}
+
+        <p><strong>Número Pokédex:</strong> #{{ pokemon.id }}</p>
+        <p><strong>Altura:</strong> {{ pokemon.height }} m</p>
+        <p><strong>Peso:</strong> {{ pokemon.weight }} kg</p>
+        <p><strong>Estadísticas Base:</strong></p>
+        <ul>
+            <li>HP: {{ pokemon.hp }}</li>
+            <li>Ataque: {{ pokemon.attack }}</li>
+            <li>Defensa: {{ pokemon.defense }}</li>
+            <li>Ataque Especial: {{ pokemon.special_attack }}</li>
+            <li>Defensa Especial: {{ pokemon.special_defense }}</li>
+            <li>Velocidad: {{ pokemon.speed }}</li>
+        </ul>
+        <p><strong>Linea Evolutiva:</strong></p>
+        <div class="evolution-line">
+            {% if evolution_sprites and evolution_names %}
+                <div class="sprites">
+                    {% for sprite in evolution_sprites %}
+                        <img src="{{ sprite }}" alt="Evolution Sprite">
+                    {% endfor %}
+                </div>
+                <div class="names">
+                    {% for name in evolution_names %}
+                        <p>{{ name }}</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No hay evoluciones disponibles.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
